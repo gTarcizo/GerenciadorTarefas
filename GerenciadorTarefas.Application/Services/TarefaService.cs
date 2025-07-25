@@ -1,6 +1,8 @@
-﻿using GerenciadorTarefas.Application.Interfaces;
+﻿using GerenciadorTarefas.API.Extensions;
+using GerenciadorTarefas.Application.Interfaces;
 using GerenciadorTarefas.Domain.Entities;
 using GerenciadorTarefas.Domain.Enums;
+using GerenciadorTarefas.Domain.Exceptions;
 
 
 namespace GerenciadorTarefas.Application.Services;
@@ -17,7 +19,9 @@ public class TarefaService : ITarefaService
    }
    public async Task<Tarefa> CriarTarefa(TipoTarefaEnum tipo, string dados)
    {
-      Tarefa tarefa = new Tarefa { Id = new Guid(), Tipo = tipo, Dados = dados };
+      Tarefa tarefa = new Tarefa(tipo, dados);
+      if (!tarefa.IsValid) throw new ValidacaoException(tarefa.Notifications.RetornarDetalhesValidacao());
+
       await _repository.CriarTarefa(tarefa);
       return tarefa;
    }

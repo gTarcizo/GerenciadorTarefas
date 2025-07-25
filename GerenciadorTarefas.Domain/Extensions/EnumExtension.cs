@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.ComponentModel.DataAnnotations;
 
-namespace GerenciadorTarefas.API.Extensions;
+namespace GerenciadorTarefas.Domain.Extensions;
 
 public static class EnumExtension
 {

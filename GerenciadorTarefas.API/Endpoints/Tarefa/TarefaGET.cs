@@ -1,5 +1,5 @@
 ﻿using GerenciadorTarefas.API.DTOs;
-using GerenciadorTarefas.API.Extensions;
+using GerenciadorTarefas.Domain.Extensions;
 using GerenciadorTarefas.Application.Interfaces;
 
 namespace GerenciadorTarefas.API.Endpoints.Tarefa;

@@ -1,6 +1,7 @@
 ﻿using GerenciadorTarefas.API.DTOs;
-using GerenciadorTarefas.API.Extensions;
+using GerenciadorTarefas.Domain.Extensions;
 using GerenciadorTarefas.Application.Interfaces;
+using GerenciadorTarefas.Domain.Exceptions;
 
 namespace GerenciadorTarefas.API.Endpoints.Tarefa;
 public class TarefaPost
@@ -17,9 +18,14 @@ public class TarefaPost
 
          return Results.Created(Pattern, new TarefaResponse(tarefa.Tipo.RetornarDisplayName(), tarefa.Dados, tarefa.Status.RetornarDisplayName()));
       }
+      catch(ValidacaoException e)
+      {
+         return Results.ValidationProblem(e.Erros);
+
+      }
       catch (Exception e)
       {
-         return Results.BadRequest();
+         return Results.BadRequest(e.ToString());
       }
    }
 }
