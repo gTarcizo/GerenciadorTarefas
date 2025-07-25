@@ -3,6 +3,7 @@ using GerenciadorTarefas.Application.Services;
 using GerenciadorTarefas.Application.Interfaces;
 using GerenciadorTarefas.Infrastructure.Repository;
 using GerenciadorTarefas.Infrastructure.Data;
+using GerenciadorTarefas.Infrastructure.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ builder.Services.AddSwaggerGen();
 #region Scoped
 builder.Services.AddScoped<ITarefaService, TarefaService>();
 builder.Services.AddScoped<ITarefaRepository, TarefaRepository>();
+builder.Services.AddScoped<IMessageQueue, MessageQueue>();
 builder.Services.AddSingleton<MongoDbContext>();
 #endregion
 

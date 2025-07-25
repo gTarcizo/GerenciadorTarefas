@@ -5,7 +5,7 @@ using GerenciadorTarefas.Application.Interfaces;
 namespace GerenciadorTarefas.API.Endpoints.Tarefa;
 public class TarefaGET
 {
-   public static string Pattern => "v1/Tarefas";
+   public static string Pattern => "v1/Tarefa";
    public static string[] Methods => [HttpMethod.Get.ToString()];
    public static Delegate Handler => Action;
 

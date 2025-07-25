@@ -1,4 +1,5 @@
 ﻿using GerenciadorTarefas.API.DTOs;
+using GerenciadorTarefas.API.Extensions;
 using GerenciadorTarefas.Application.Interfaces;
 
 namespace GerenciadorTarefas.API.Endpoints.Tarefa;
@@ -12,9 +13,9 @@ public class TarefaPost
    {
       try
       {
-         await _service.CriarTarefa(tarefaRequest.Tipo, tarefaRequest.Dados);
+         var tarefa = await _service.CriarTarefa(tarefaRequest.Tipo, tarefaRequest.Dados);
 
-         return Results.Created(Pattern,tarefaRequest);
+         return Results.Created(Pattern, new TarefaResponse(tarefa.Tipo.RetornarDisplayName(), tarefa.Dados, tarefa.Status.RetornarDisplayName()));
       }
       catch (Exception e)
       {

@@ -7,9 +7,12 @@ namespace GerenciadorTarefas.Infrastructure.Repository;
 public class TarefaRepository : ITarefaRepository
 {
    private readonly IMongoCollection<Tarefa> _tarefas;
-   public TarefaRepository(MongoDbContext mongoDb)
+   private IMessageQueue _rabbit;
+
+   public TarefaRepository(MongoDbContext mongoDb, IMessageQueue rabbit)
    {
       _tarefas = mongoDb._database.GetCollection<Tarefa>("Tarefa");
+      _rabbit = rabbit;
    }
    public async Task<Tarefa> RetornarTarefaPor(Guid id)
    {
@@ -19,5 +22,6 @@ public class TarefaRepository : ITarefaRepository
    public async Task CriarTarefa(Tarefa tarefa)
    {
       await _tarefas.InsertOneAsync(tarefa);
+      await _rabbit.PublicarTarefa(tarefa);
    }
 }

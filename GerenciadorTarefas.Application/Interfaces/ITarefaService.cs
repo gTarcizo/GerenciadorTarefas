@@ -5,5 +5,5 @@ namespace GerenciadorTarefas.Application.Interfaces;
 public interface ITarefaService
 {
    Task<Tarefa> RetornarTarefaPor(Guid id);
-   Task<Guid> CriarTarefa(TipoTarefaEnum tipo, string dados);
+   Task<Tarefa> CriarTarefa(TipoTarefaEnum tipo, string dados);
 }

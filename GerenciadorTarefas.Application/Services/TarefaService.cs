@@ -15,10 +15,10 @@ public class TarefaService : ITarefaService
    {
       return await _repository.RetornarTarefaPor(id);
    }
-   public async Task<Guid> CriarTarefa(TipoTarefaEnum tipo, string dados)
+   public async Task<Tarefa> CriarTarefa(TipoTarefaEnum tipo, string dados)
    {
       Tarefa tarefa = new Tarefa { Id = new Guid(), Tipo = tipo, Dados = dados };
       await _repository.CriarTarefa(tarefa);
-      return tarefa.Id;
+      return tarefa;
    }
 }
