@@ -22,6 +22,7 @@ public class Tarefa : Notifiable<Notification>
    public TipoTarefaEnum Tipo { get; set; }
    public string Dados { get; set; }
    public StatusTarefaEnum Status { get; set; }
+   public int Tentativa { get; set; }
 
    private void ContractValidate()
    {
