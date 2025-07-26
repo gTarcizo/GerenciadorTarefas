@@ -11,5 +11,6 @@ public class Tarefa
    public Guid Id { get; set; }
    public string Dados { get; set; }
    public StatusTarefaEnum Status { get; set; }
+   [BsonRepresentation(BsonType.Int32)]
    public int Tentativa { get; set; }
 }

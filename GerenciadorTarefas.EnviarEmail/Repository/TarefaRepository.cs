@@ -14,11 +14,12 @@ public class TarefaRepository : ITarefaRepository
       _tarefas = mongoDb._database.GetCollection<Tarefa>("Tarefa");
    }
 
-   public async Task AtualizarStatus(Guid id, StatusTarefaEnum status)
+   public async Task AtualizarStatus(Guid id, StatusTarefaEnum status, int tentativa = 1)
    {
       var filtro = Builders<Tarefa>.Filter.Eq(x => x.Id, id);
       var atualizacao = Builders<Tarefa>.Update
-          .Set(t => t.Status, status);
+          .Set(t => t.Status, status)
+          .Set(t => t.Tentativa, tentativa);
 
       await _tarefas.UpdateOneAsync(filtro, atualizacao);
    }

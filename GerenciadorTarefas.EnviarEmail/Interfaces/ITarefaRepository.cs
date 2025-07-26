@@ -3,5 +3,5 @@
 namespace GerenciadorTarefas.EnviarEmail.Interfaces;
 public interface ITarefaRepository
 {
-   Task AtualizarStatus(Guid id, StatusTarefaEnum status);
+   Task AtualizarStatus(Guid id, StatusTarefaEnum status, int tentativa = 1);
 }

@@ -27,34 +27,37 @@ public class Worker : BackgroundService
       {
          var tarefa = JsonSerializer.Deserialize<Tarefa>(mensagem);
          if (tarefa == null) return;
-         bool processado = false;
-
 
          try
          {
-            for (int tentativa = 1; tentativa <= 3 && !processado; tentativa++)
-            {
-               processado = await ProcessarTarefa(tarefa);
-            }
+            await ProcessarTarefa(tarefa);
          }
          catch (Exception ex)
          {
-            _logger.LogInformation($"Falha ao processar email");
-            await _repository.AtualizarStatus(tarefa.Id, StatusTarefaEnum.Erro);
+            if(tarefa.Tentativa < 3)
+            {
+               _logger.LogInformation($"Falha ao processar: {tarefa.Id}.\n Tentando novamente.");
+               
+               tarefa.Tentativa++;
+               _queueService.Publicar(JsonSerializer.Serialize(tarefa));
+            }
+            else
+            {
+               await _repository.AtualizarStatus(tarefa.Id, StatusTarefaEnum.Erro);
+               _logger.LogInformation($"Falha ao processar email: {ex.Message.ToString()}");
+            }
          }
       });
 
       return Task.CompletedTask;
    }
 
-   public async Task<bool> ProcessarTarefa(Tarefa tarefa)
+   public async Task ProcessarTarefa(Tarefa tarefa)
    {
       await _repository.AtualizarStatus(tarefa.Id, StatusTarefaEnum.EmProcessamento);
       _logger.LogInformation($"Processando os dados: {tarefa.Dados}");
 
       await _repository.AtualizarStatus(tarefa.Id, StatusTarefaEnum.Concluida);
       _logger.LogInformation($"Email processado com sucesso. {tarefa.Id}");
-
-      return true;
    }
 }
