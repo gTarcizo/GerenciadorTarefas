@@ -27,14 +27,14 @@ public class Worker : BackgroundService
       {
          var tarefa = JsonSerializer.Deserialize<Tarefa>(mensagem);
          if (tarefa == null) return;
-         bool sucesso = false;
+         bool processado = false;
 
 
          try
          {
-            for (int tentativa = 1; tentativa <= 3 && !sucesso; tentativa++)
+            for (int tentativa = 1; tentativa <= 3 && !processado; tentativa++)
             {
-               sucesso = await ProcessarTarefa(tarefa);
+               processado = await ProcessarTarefa(tarefa);
             }
          }
          catch (Exception ex)
@@ -52,10 +52,9 @@ public class Worker : BackgroundService
       await _repository.AtualizarStatus(tarefa.Id, StatusTarefaEnum.EmProcessamento);
       _logger.LogInformation($"Processando os dados: {tarefa.Dados}");
 
-      await Task.Delay(1500);
-
-      _logger.LogInformation($"Email processado com sucesso. {tarefa.Id}");
       await _repository.AtualizarStatus(tarefa.Id, StatusTarefaEnum.Concluida);
+      _logger.LogInformation($"Email processado com sucesso. {tarefa.Id}");
+
       return true;
    }
 }
