@@ -27,7 +27,6 @@ public class Tarefa : Notifiable<Notification>
    private void ContractValidate()
    {
       string nameOfDados = nameof(Dados);
-      int quantidadeCaracteres = 3;
 
       var contract = new Contract<Tarefa>()
             .Requires()
